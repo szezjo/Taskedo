@@ -16,12 +16,11 @@ const App = () => {
 
     })
       .then(response =>{
-          console.log(response);
+          setFetched([...fetched, response.data]);
       })
       .catch(error=>{
         console.log(error);
       })
-    setFetched([...fetched, "henlo darkness my old frien"]);
   }
   return (
     <div className="App">
