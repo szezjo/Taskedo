@@ -1,12 +1,26 @@
 import './App.css';
 import { useState } from 'react';
+const axios = require('axios');
 
 const App = () => {
   const [fetched, setFetched] = useState([])
 
   const fetchResponse = () => {
-    console.log('unsettling');
-    // console.log(fetched);
+    // axios.get('127.0.0.1:5000/').then(response => {
+    //   console.log(response);
+    // })
+    // GET request for remote image in node.js
+    axios({
+      method: 'get',
+      url: 'http://127.0.0.1:5000',
+
+    })
+      .then(response =>{
+          console.log(response);
+      })
+      .catch(error=>{
+        console.log(error);
+      })
     setFetched([...fetched, "henlo darkness my old frien"]);
   }
   return (
@@ -21,7 +35,6 @@ const App = () => {
       </button>
       <div>
         {fetched.map(element => {
-          console.log(element);
           return (
             <h3>{element}</h3>);
         })}
