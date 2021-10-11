@@ -20,10 +20,10 @@ const App = () => {
         Get a response from the backend
       </button>
       <div>
-        {fetched.forEach(element => {
+        {fetched.map(element => {
           console.log(element);
           return (
-            <h1>{element}</h1>);
+            <h3>{element}</h3>);
         })}
       </div>
     </div>
