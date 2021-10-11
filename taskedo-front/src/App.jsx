@@ -12,7 +12,7 @@ const App = () => {
     // GET request for remote image in node.js
     axios({
       method: 'get',
-      url: 'http://127.0.0.1:5000',
+      url: 'http://localhost:5000',
 
     })
       .then(response =>{
