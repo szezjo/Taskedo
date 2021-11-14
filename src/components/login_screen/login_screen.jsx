@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
+
+const axios = require('axios');
 
 const darkTheme = createTheme({
     palette: {
@@ -12,10 +14,19 @@ const darkTheme = createTheme({
 });
 
 const LoginScreen = () => {
-    const handleSubmit = (e) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const userInput = new FormData(e.currentTarget);
-        console.log(`${userInput.get('username')} ${userInput.get('password')}`);
+        axios.post("http://localhost:5000/user/login", {
+            body: JSON.stringify({
+                email: email,
+                password: password
+            })
+        })
+        .then(res => console.log(`${res.status} ${res.data}`))
+        .catch(err => console.log(err));
     }
 
     return (
@@ -30,11 +41,14 @@ const LoginScreen = () => {
                             margin="normal"
                             required
                             fullWidth
-                            id="username"
-                            label="Nazwa użytkownika"
-                            name="username"
-                            autoComplete="username"
+                            id="email"
+                            label="Adres e-mail"
+                            name="email"
+                            type="email"
+                            autoComplete="email"
                             autoFocus
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
                         />
                         <TextField 
                             margin="normal"
@@ -45,6 +59,8 @@ const LoginScreen = () => {
                             name="password"
                             autoComplete="current-password"
                             type="password"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                         />
                         <Grid container justifyContent="center">
                             <Button type="submit" variant="contained" sx={{ marginTop: 3, marginBottom: 2 }}>Zaloguj się</Button>
