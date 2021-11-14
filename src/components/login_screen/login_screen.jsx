@@ -19,12 +19,11 @@ const LoginScreen = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        axios.post("http://localhost:5000/user/login", {
-            body: JSON.stringify({
+        axios.post("http://localhost:5000/user/login", ({
                 email: email,
                 password: password
             })
-        })
+        )
         .then(res => console.log(`${res.status} ${res.data}`))
         .catch(err => console.log(err));
     }
