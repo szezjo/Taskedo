@@ -1,0 +1,9 @@
+[[redirects]]
+  from = "/workspaces"
+  to = "/workspaces"
+  status = 200
+
+[[redirects]]
+  from = "/index.html"
+  to = "/"
+  status = 200
