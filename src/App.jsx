@@ -1,9 +1,7 @@
 import './App.css';
-import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 
 import LoginScreen from './components/login_screen/login_screen';
-const axios = require('axios');
 
 const App = () => {
   return (
