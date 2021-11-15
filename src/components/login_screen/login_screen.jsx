@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 import { Alert, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 
@@ -14,7 +14,7 @@ const darkTheme = createTheme({
     },
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({configureToken, loggedIn}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -37,7 +37,7 @@ const LoginScreen = () => {
             })
         )
         .then(res => {
-            console.log(`${res.status} ${res.data}`)
+            configureToken(res.data.token);
             routeChange();
         })
         .catch(err => {
@@ -70,7 +70,7 @@ const LoginScreen = () => {
 
     const removeAlerts = () => {setIncorrectPassword(false); setIncorrectRegister(false);}
 
-    return (
+    return loggedIn ? <Navigate replace to="/workspaces" /> :
         <ThemeProvider theme={darkTheme}>
             <Container maxWidth="sm">
                 <CssBaseline />
@@ -130,7 +130,6 @@ const LoginScreen = () => {
                 </Box>
             </Container>
         </ThemeProvider>
-    )
 };
 
 export default LoginScreen;
