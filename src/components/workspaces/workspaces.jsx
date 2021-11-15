@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { Box, Container, Card, CardContent, Grid, List, CssBaseline, Typography, Toolbar, IconButton, Divider, Avatar, ListItem, ListItemIcon, ListItemText} from '@mui/material';
+import { Box, Container, Card, CardContent, Grid, List, Menu, MenuItem, CssBaseline, Typography, Toolbar, IconButton, Divider, Avatar, ListItem, ListItemIcon, ListItemText} from '@mui/material';
 import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { ChevronLeft as ChevronLeftIcon, Menu as MenuIcon } from '@mui/icons-material';
@@ -88,10 +89,18 @@ const generateAvatar = (text) => {
     return `${firstWord}${secondWord}`;
 }
 
-const Workspaces = () => {
+const Workspaces = ({logout, loggedIn}) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [anchorEl, setAnchorEl] = useState(null);
+    const menuOpen = Boolean(anchorEl);
 
-    return (
+    const navigate = useNavigate();
+    const routeChange = () => {
+        const path = '';
+        navigate(path);
+    }
+
+    return !loggedIn ? <Navigate replace to='/' /> : (
         <ThemeProvider theme={darkTheme}>
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
@@ -133,12 +142,29 @@ const Workspaces = () => {
                             ))}
                         </List>
                         <List>
-                            <ListItem button key="UserAvatar">
+                            <ListItem 
+                                button 
+                                id="user-button" 
+                                aria-controls="user-menu"
+                                aria-haspopup="true"
+                                aria-expanded={menuOpen ? 'true' : undefined} 
+                                onClick={(e) => setAnchorEl(e.currentTarget)}
+                                key="UserAvatar"
+                            >
                                 <ListItemIcon>
                                     <Avatar sx={{ bgcolor: orange[500] }}>U</Avatar>
                                 </ListItemIcon>
                                 <ListItemText primary="user" />
                             </ListItem>
+                            <Menu
+                                id="user-menu"
+                                anchorEl={anchorEl}
+                                open={menuOpen}
+                                onClose={() => setAnchorEl(null)}
+                                MenuListProps={{'aria-labelledby': 'user-button'}}
+                            >
+                                <MenuItem onClick={() => {logout(); routeChange();}}>Wyloguj</MenuItem>
+                            </Menu>
                         </List>
                     </Box>
                 </Drawer>

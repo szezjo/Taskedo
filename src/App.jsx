@@ -9,11 +9,13 @@ const App = () => {
   const [token, setToken] = useState(() => {
     const saved = localStorage.getItem("token");
     const initialValue = saved;
+    console.log(initialValue);
     return initialValue || '';
   });
   const [loggedIn, setLoggedIn] = useState(() => {
     const saved = localStorage.getItem("loggedIn");
     const initialValue = saved;
+    console.log(initialValue);
     return initialValue || false;
   });
 
@@ -22,12 +24,21 @@ const App = () => {
     setLoggedIn(true);
   }
 
+  const logout = () => {
+    setToken('');
+    setLoggedIn(false);
+  }
+
   useEffect(() => {
     if(token==='') localStorage.removeItem("token");
     else localStorage.setItem("token", token);
   }, [token]);
 
-  useEffect(() => localStorage.setItem("loggedIn", loggedIn), [loggedIn]);
+  useEffect(() => {
+    if(loggedIn) localStorage.setItem("loggedIn", loggedIn)
+    else localStorage.removeItem("loggedIn");
+  }
+  , [loggedIn]);
 
   return (
     // <div className="App">
@@ -50,7 +61,7 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} />} />
-        <Route path="/workspaces" element={<Workspaces />} />
+        <Route path="/workspaces" element={<Workspaces logout={logout} loggedIn={loggedIn} />} />
       </Routes>
     </Router>
   );
