@@ -118,7 +118,7 @@ const LoginScreen = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
-                            onFocus={() => setIncorrectPassword(false)}
+                            onFocus={removeAlerts}
                         />
                         <Grid container justifyContent="center">
                             <Button type="submit" variant="contained" sx={{ marginTop: 3, marginBottom: 2 }}>{registerOption ? 'Załóż konto' : 'Zaloguj się'}</Button>
