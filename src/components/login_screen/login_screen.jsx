@@ -20,6 +20,7 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [registerOption, setRegisterOption] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const [registerSuccess, setRegisterSuccess] = useState(false);
 
     const navigate = useNavigate();
     const routeChange = () => {
@@ -40,6 +41,7 @@ const LoginScreen = () => {
         })
         .catch(err => {
             console.log(err)
+            setRegisterSuccess(false)
             setIncorrectPassword(true);
         });
     }
@@ -51,7 +53,13 @@ const LoginScreen = () => {
             name: username,
             password: password
         }))
-        .then(res => console.log(`${res.status} ${res.data}`))
+        .then(res => {
+            setRegisterSuccess(true)
+            setEmail('')
+            setPassword('')
+            setUsername('')
+            setRegisterOption(false)
+        })
         .catch(err => console.log(err));
     }
 
@@ -63,6 +71,7 @@ const LoginScreen = () => {
                     <img src="logo.png" style={{maxWidth: '150px', marginBottom: 24}} alt="Taskedo Logo" />
                     <Typography component="h1" variant="h4" sx={{ marginBottom: 4 }}>{registerOption ? 'Rejestracja' : 'Logowanie'}</Typography>
                     {incorrectPassword && <Alert severity="error">Niepoprawne dane logowania!</Alert>}
+                    {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
                         <TextField 
                             margin="normal"
