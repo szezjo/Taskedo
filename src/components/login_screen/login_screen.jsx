@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
@@ -18,6 +19,13 @@ const LoginScreen = () => {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [registerOption, setRegisterOption] = useState(false);
+    const [incorrectPassword, setIncorrectPassword] = useState(false);
+
+    const navigate = useNavigate();
+    const routeChange = () => {
+        const path = 'workspaces';
+        navigate(path);
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -26,8 +34,14 @@ const LoginScreen = () => {
                 password: password
             })
         )
-        .then(res => console.log(`${res.status} ${res.data}`))
-        .catch(err => console.log(err));
+        .then(res => {
+            console.log(`${res.status} ${res.data}`)
+            routeChange();
+        })
+        .catch(err => {
+            console.log(err)
+            setIncorrectPassword(true);
+        });
     }
 
     const handleSignup = async (e) => {
@@ -48,6 +62,7 @@ const LoginScreen = () => {
                 <Box sx={{marginTop: 16, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <img src="logo.png" style={{maxWidth: '150px', marginBottom: 24}} alt="Taskedo Logo" />
                     <Typography component="h1" variant="h4" sx={{ marginBottom: 4 }}>{registerOption ? 'Rejestracja' : 'Logowanie'}</Typography>
+                    {incorrectPassword && <Alert severity="error">Niepoprawne dane logowania!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
                         <TextField 
                             margin="normal"
@@ -61,6 +76,7 @@ const LoginScreen = () => {
                             autoFocus
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onFocus={() => setIncorrectPassword(false)}
                         />
                         {registerOption && <TextField 
                             margin="normal"
@@ -72,6 +88,7 @@ const LoginScreen = () => {
                             autoComplete="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            onFocus={() => setIncorrectPassword(false)}
                         />}
                         <TextField 
                             margin="normal"
@@ -84,6 +101,7 @@ const LoginScreen = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onFocus={() => setIncorrectPassword(false)}
                         />
                         <Grid container justifyContent="center">
                             <Button type="submit" variant="contained" sx={{ marginTop: 3, marginBottom: 2 }}>{registerOption ? 'Załóż konto' : 'Zaloguj się'}</Button>

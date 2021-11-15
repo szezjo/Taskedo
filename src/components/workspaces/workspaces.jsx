@@ -147,7 +147,7 @@ const Workspaces = () => {
                     <Container maxWidth="md">
                         <Grid container spacing={4}>
                             {['Tablica 1', 'Tablica 2', 'Tablica 3', 'Tablica 4', 'Tablica 5'].map((text, index) => (
-                                <Grid item xs={4}>
+                                <Grid key={text} item xs={4}>
                                     <Card>
                                         <CardContent>
                                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Tablica</Typography>
