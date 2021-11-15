@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/workspaces"
-  to = "/workspaces"
+  to = "/"
   status = 200
 
 [[redirects]]
