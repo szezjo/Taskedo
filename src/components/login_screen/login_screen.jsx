@@ -20,6 +20,7 @@ const LoginScreen = () => {
     const [username, setUsername] = useState('');
     const [registerOption, setRegisterOption] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const [incorrectRegister, setIncorrectRegister] = useState(false);
     const [registerSuccess, setRegisterSuccess] = useState(false);
 
     const navigate = useNavigate();
@@ -60,8 +61,14 @@ const LoginScreen = () => {
             setUsername('')
             setRegisterOption(false)
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            console.log(err)
+            setRegisterSuccess(false)
+            setIncorrectRegister(true)
+        });
     }
+
+    const removeAlerts = () => {setIncorrectPassword(false); setIncorrectRegister(false);}
 
     return (
         <ThemeProvider theme={darkTheme}>
@@ -71,6 +78,7 @@ const LoginScreen = () => {
                     <img src="logo.png" style={{maxWidth: '150px', marginBottom: 24}} alt="Taskedo Logo" />
                     <Typography component="h1" variant="h4" sx={{ marginBottom: 4 }}>{registerOption ? 'Rejestracja' : 'Logowanie'}</Typography>
                     {incorrectPassword && <Alert severity="error">Niepoprawne dane logowania!</Alert>}
+                    {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
                     {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
                         <TextField 
@@ -85,7 +93,7 @@ const LoginScreen = () => {
                             autoFocus
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
-                            onFocus={() => setIncorrectPassword(false)}
+                            onFocus={removeAlerts}
                         />
                         {registerOption && <TextField 
                             margin="normal"
@@ -97,7 +105,7 @@ const LoginScreen = () => {
                             autoComplete="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
-                            onFocus={() => setIncorrectPassword(false)}
+                            onFocus={removeAlerts}
                         />}
                         <TextField 
                             margin="normal"
