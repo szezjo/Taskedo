@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 import LoginScreen from './components/login_screen/login_screen';
 import Workspaces from './components/workspaces/workspaces';
+import Board from './components/board/board'
 
 const App = () => {
   const [token, setToken] = useState(() => {
@@ -62,6 +63,7 @@ const App = () => {
       <Routes>
         <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} />} />
         <Route path="/workspaces" element={<Workspaces logout={logout} loggedIn={loggedIn} />} />
+        <Route path="/board" element={<Board boardName="Board name here" />} />
       </Routes>
     </Router>
   );
