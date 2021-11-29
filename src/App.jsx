@@ -37,10 +37,6 @@ const App = () => {
     setLoggedIn(true);
   }
 
-  const configureWorkspaceId = (newId) => {
-    setWorkspaceId(newId);
-  }
-
   const goToBoard = (board) => {
     setActiveBoard(board);
   }

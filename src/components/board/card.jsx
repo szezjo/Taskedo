@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 import { Typography, CardContent } from '@mui/material';
 import MuiCard from '@mui/material/Card';

@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
-import { AppBar, Box, Container, Card, CardContent, Grid, IconButton, Paper, Stack, CssBaseline, Typography, ListItem, ListITemIcon, ListItemText, Toolbar } from '@mui/material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { AppBar, Box, Container, IconButton, Stack, CssBaseline, Typography, Toolbar } from '@mui/material';
 import { ChevronLeft as ChevronLeftIcon } from '@mui/icons-material';
 import List from './list'
 
