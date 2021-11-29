@@ -103,6 +103,10 @@ const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) 
     const handleModalOpen = () => setModalOpen(true);
     const handleModalClose = () => setModalOpen(false);
 
+    const [newBoardOpen, setNewBoardOpen] = React.useState(false);
+    const handleNewBoardOpen = () => setNewBoardOpen(true);
+    const handleNewBoardClose = () => setNewBoardOpen(false);
+
     const navigate = useNavigate();
     const routeChange = () => {
         const path = '';
@@ -145,6 +149,20 @@ const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) 
         .then(res => {
             fetchData()
             handleModalClose()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const createBoard = async (name) => {
+        axios.post("https://shrouded-lake-50073.herokuapp.com/workspace/create_board", ({
+            "name": name,
+            "workspace_id": workspaces[activeWorkspace].id
+        }))
+        .then(res => {
+            fetchData()
+            handleNewBoardClose()
         })
         .catch(err => {
             console.log(err)
@@ -254,11 +272,19 @@ const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) 
                                     </Card>
                                 </Grid>
                             ))}
+                            {workspaces.length && <Grid key="addBoard" item xs={4}>
+                                <Card onClick={handleNewBoardOpen}>
+                                        <CardContent>
+                                            <Typography variant="h5" component="div">Dodaj tablicę</Typography>
+                                        </CardContent>
+                                    </Card>
+                                </Grid>}
                         </Grid>
                     </Container>
                 </Box>
             </Box>
             <EditModal open={modalOpen} handleEdit={createWorkspace} handleClose={handleModalClose} />
+            <EditModal open={newBoardOpen} handleEdit={createBoard} handleClose={handleNewBoardClose} isBoardCreate />
         </ThemeProvider>
     )
 }

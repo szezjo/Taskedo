@@ -15,7 +15,7 @@ const style = {
     p: 4,
 };
 
-const EditModal = ({open, handleEdit, handleClose}) => {
+const EditModal = ({open, handleEdit, handleClose, isBoardCreate}) => {
     const [title, setTitle] = useState('');
 
     return (
@@ -27,7 +27,7 @@ const EditModal = ({open, handleEdit, handleClose}) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        Nowy obszar roboczy
+                        {isBoardCreate ? 'Nowa tablica' : 'Nowy obszar roboczy'}
                     </Typography>
                     <Box component="form">
                         <TextField 
