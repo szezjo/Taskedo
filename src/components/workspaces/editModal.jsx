@@ -15,9 +15,8 @@ const style = {
     p: 4,
 };
 
-const EditModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
+const EditModal = ({open, handleEdit, handleClose}) => {
     const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
 
     return (
         <div>
@@ -28,7 +27,7 @@ const EditModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        {isCard ? (isNew ? 'Nowa karta' : 'Edytuj kartę') : (isNew ? 'Nowa lista' : 'Edytuj listę')}
+                        Nowy obszar roboczy
                     </Typography>
                     <Box component="form">
                         <TextField 
@@ -42,17 +41,8 @@ const EditModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />
-                        {isCard && <TextField 
-                            margin="normal"
-                            fullWidth
-                            id="description"
-                            label="Opis"
-                            name="description"
-                            value={description}
-                            onChange={(e) => setDescription(e.target.value)}
-                        />}
                         <Button 
-                            onClick={() => handleEdit(title, description)}
+                            onClick={() => handleEdit(title)}
                             variant="contained"
                             sx={{ marginTop: 3, marginBottom: 2 }}
                         >

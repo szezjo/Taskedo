@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, Navigate } from 'react-router-dom';
 
 import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
@@ -7,6 +7,9 @@ import MuiAppBar from '@mui/material/AppBar';
 import MuiDrawer from '@mui/material/Drawer';
 import { ChevronLeft as ChevronLeftIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { orange } from '@mui/material/colors';
+import EditModal from './editModal'
+
+const axios = require('axios');
 
 const drawerWidth = 240;
 
@@ -89,16 +92,74 @@ const generateAvatar = (text) => {
     return `${firstWord}${secondWord}`;
 }
 
-const Workspaces = ({logout, loggedIn}) => {
+const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [workspaces, setWorkspaces] = useState([]);
+    const [activeWorkspace, setActiveWorkspace] = useState(0);
     const menuOpen = Boolean(anchorEl);
+
+    const [modalOpen, setModalOpen] = React.useState(false);
+    const handleModalOpen = () => setModalOpen(true);
+    const handleModalClose = () => setModalOpen(false);
 
     const navigate = useNavigate();
     const routeChange = () => {
         const path = '';
         navigate(path);
     }
+
+    const fetchData = async () => {
+        axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
+            email: userEmail
+        }))
+        .then(res => {
+            setWorkspaces(res.data)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    useEffect(() => {
+        const fetchData = async () => {
+            axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
+                email: userEmail
+            }))
+            .then(res => {
+                setWorkspaces(res.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+        }
+
+        fetchData()
+    }, [userEmail])
+
+    const createWorkspace = async (name) => {
+        axios.post("https://shrouded-lake-50073.herokuapp.com/user/create_workspace", ({
+            "name": name,
+            "email": userEmail
+        }))
+        .then(res => {
+            fetchData()
+            handleModalClose()
+        })
+        .catch(err => {
+            console.log(err)
+        })
+    }
+
+    const goToBoard = (board) => {
+        changeBoard(board)
+        const path = '/board';
+        navigate(path);
+    }
+
+    useEffect(() => {
+        workspaces.length && setWorkspaceId(workspaces[activeWorkspace].id)
+    }, [activeWorkspace, setWorkspaceId, workspaces])
 
     return !loggedIn ? <Navigate replace to='/' /> : (
         <ThemeProvider theme={darkTheme}>
@@ -132,12 +193,23 @@ const Workspaces = ({logout, loggedIn}) => {
                     <Divider />
                     <Box sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', height: '100%' }}>
                         <List>
-                            {['Obszar roboczy', 'Studia', 'Praca', 'Taskedo Workspace'].map((text, _) => (
-                                <ListItem button key={text}>
+                        <ListItem 
+                            button 
+                            id="add-workspace-button"  
+                            onClick={handleModalOpen}
+                            key="AddWorkspace"
+                        >
+                            <ListItemIcon>
+                                <Avatar>+</Avatar>
+                            </ListItemIcon>
+                            <ListItemText primary="Dodaj obszar" />
+                        </ListItem>
+                            {workspaces.map((workspace, index) => (
+                                <ListItem button key={workspace.id} onClick={() => setActiveWorkspace(index)}>
                                     <ListItemIcon>
-                                        <Avatar>{generateAvatar(text)}</Avatar>
+                                        <Avatar>{generateAvatar(workspace.name)}</Avatar>
                                     </ListItemIcon>
-                                    <ListItemText primary={text} />
+                                    <ListItemText primary={workspace.name} />
                                 </ListItem>
                             ))}
                         </List>
@@ -172,12 +244,12 @@ const Workspaces = ({logout, loggedIn}) => {
                     <DrawerHeader />
                     <Container maxWidth="md">
                         <Grid container spacing={4}>
-                            {['Tablica 1', 'Tablica 2', 'Tablica 3', 'Tablica 4', 'Tablica 5'].map((text, index) => (
-                                <Grid key={text} item xs={4}>
-                                    <Card>
+                            {workspaces.length>0 && workspaces[activeWorkspace].boards.map((board, index) => (
+                                <Grid key={board.id} item xs={4}>
+                                    <Card onClick={() => goToBoard(board)}>
                                         <CardContent>
                                             <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>Tablica</Typography>
-                                            <Typography variant="h5" component="div">{text}</Typography>
+                                            <Typography variant="h5" component="div">{board.name}</Typography>
                                         </CardContent>
                                     </Card>
                                 </Grid>
@@ -186,6 +258,7 @@ const Workspaces = ({logout, loggedIn}) => {
                     </Container>
                 </Box>
             </Box>
+            <EditModal open={modalOpen} handleEdit={createWorkspace} handleClose={handleModalClose} />
         </ThemeProvider>
     )
 }

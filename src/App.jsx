@@ -19,10 +19,40 @@ const App = () => {
     console.log(initialValue);
     return initialValue || false;
   });
+  const [activeBoard, setActiveBoard] = useState(() => {
+    const saved = localStorage.getItem("activeBoard");
+    const initialValue = saved;
+    console.log(initialValue);
+    return initialValue || false;
+  })
+  const [workspaceId, setWorkspaceId] = useState(() => {
+    const saved = localStorage.getItem("workspaceId");
+    const initialValue = saved;
+    console.log(initialValue);
+    return initialValue || false;
+  })
 
   const configureToken = (newToken) => {
     setToken(newToken);
     setLoggedIn(true);
+  }
+
+  const configureWorkspaceId = (newId) => {
+    setWorkspaceId(newId);
+  }
+
+  const goToBoard = (board) => {
+    setActiveBoard(board);
+  }
+
+  const [email, setEmail] = useState(() => {
+    const saved = localStorage.getItem("email");
+    const initialValue = saved;
+    console.log(initialValue);
+    return initialValue || '';
+  });
+  const configureEmail = (newEmail) => {
+    setEmail(newEmail);
   }
 
   const logout = () => {
@@ -36,8 +66,17 @@ const App = () => {
   }, [token]);
 
   useEffect(() => {
+    if(email==='') localStorage.removeItem("email");
+    else localStorage.setItem("email", email);
+  }, [email]);
+
+  useEffect(() => {
     if(loggedIn) localStorage.setItem("loggedIn", loggedIn)
-    else localStorage.removeItem("loggedIn");
+    else {
+      localStorage.removeItem("loggedIn");
+      localStorage.removeItem("activeBoard");
+      localStorage.removeItem("workspaceId");
+    }
   }
   , [loggedIn]);
 
@@ -61,9 +100,9 @@ const App = () => {
 
     <Router>
       <Routes>
-        <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} />} />
-        <Route path="/workspaces" element={<Workspaces logout={logout} loggedIn={loggedIn} />} />
-        <Route path="/board" element={<Board boardName="Board name here" />} />
+        <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} configureEmail={configureEmail} />} />
+        <Route path="/workspaces" element={<Workspaces changeBoard={goToBoard} logout={logout} loggedIn={loggedIn} userEmail={email} setWorkspaceId={setWorkspaceId} />} />
+        <Route path="/board" element={<Board board={activeBoard} workspaceId={workspaceId} />} />
       </Routes>
     </Router>
   );

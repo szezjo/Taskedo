@@ -14,7 +14,7 @@ const darkTheme = createTheme({
     },
 });
 
-const LoginScreen = ({configureToken, loggedIn}) => {
+const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -37,6 +37,7 @@ const LoginScreen = ({configureToken, loggedIn}) => {
             })
         )
         .then(res => {
+            configureEmail(email);
             configureToken(res.data.token);
             routeChange();
         })
