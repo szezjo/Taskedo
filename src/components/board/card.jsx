@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Typography, CardContent } from '@mui/material';
 import MuiCard from '@mui/material/Card';
-import EditModal from './editModal'
+import CardModal from './cardModal'
 
 const Card = ({card, onCardChange}) => {
     const [open, setOpen] = React.useState(false);
@@ -16,7 +16,7 @@ const Card = ({card, onCardChange}) => {
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{card.contents}</Typography>
             </CardContent>
         </MuiCard>
-        <EditModal open={open} handleClose={handleClose} isNew={false} isCard={true} />
+        <CardModal open={open} handleClose={handleClose} isNew={false} isCard={true} />
         </>
 };
 

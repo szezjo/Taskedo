@@ -52,7 +52,11 @@ const EditModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
                             onChange={(e) => setDescription(e.target.value)}
                         />}
                         <Button 
-                            onClick={() => handleEdit(title, description)}
+                            onClick={() => {
+                                handleEdit(title, description)
+                                setTitle('')
+                                setDescription('')
+                            }}
                             variant="contained"
                             sx={{ marginTop: 3, marginBottom: 2 }}
                         >

@@ -42,7 +42,10 @@ const EditModal = ({open, handleEdit, handleClose, isBoardCreate}) => {
                             onChange={(e) => setTitle(e.target.value)}
                         />
                         <Button 
-                            onClick={() => handleEdit(title)}
+                            onClick={() => {
+                                handleEdit(title)
+                                setTitle('')
+                            }}
                             variant="contained"
                             sx={{ marginTop: 3, marginBottom: 2 }}
                         >

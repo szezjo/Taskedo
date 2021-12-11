@@ -45,6 +45,7 @@ const Board = ({board, workspaceId}) => {
 
     return !board ? <Navigate replace to='/workspaces' /> : (
         <ThemeProvider theme={darkTheme}>
+            <CssBaseline />
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="sticky">
