@@ -74,6 +74,32 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
 
     const removeAlerts = () => {setIncorrectPassword(false); setIncorrectRegister(false);}
 
+    const config = {
+        headers: {
+            "Contetnt-Type":"multipart/form-data" 
+        }
+    };
+    const sendImage = (e) => {
+
+        const formData = new FormData();
+        formData.append('file', file)   
+        e.preventDefault();
+    
+        axios.post(`${SERVER_URL}/workspace/add_comment_to_ticket`, formData, config)
+        .then(res => {
+            if (res.data.status === 'success') {
+            console.log('File send successfully');
+            }
+            else{
+            console.log('File send failed');
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })
+          
+    }
+
     return loggedIn ? <Navigate replace to="/workspaces" /> :
         <ThemeProvider theme={darkTheme}>
             <Container maxWidth="sm">
@@ -85,6 +111,7 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
                     {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
                     {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
+                        <Input type="file" onChange={sendImage}>zalacznik</Input> //! DODAJE ZALACZNIK TUTAJ DO ZMIANY
                         <TextField 
                             margin="normal"
                             required
