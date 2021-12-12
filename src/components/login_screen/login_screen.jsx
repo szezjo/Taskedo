@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate, Navigate } from 'react-router-dom';
 
-import { Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
+import { Alert, Button, Container, CssBaseline, Grid, TextField, Typography } from '@mui/material';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
@@ -13,11 +14,20 @@ const darkTheme = createTheme({
     },
 });
 
-const LoginScreen = () => {
+const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [registerOption, setRegisterOption] = useState(false);
+    const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const [incorrectRegister, setIncorrectRegister] = useState(false);
+    const [registerSuccess, setRegisterSuccess] = useState(false);
+
+    const navigate = useNavigate();
+    const routeChange = () => {
+        const path = 'workspaces';
+        navigate(path);
+    }
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -26,8 +36,16 @@ const LoginScreen = () => {
                 password: password
             })
         )
-        .then(res => console.log(`${res.status} ${res.data}`))
-        .catch(err => console.log(err));
+        .then(res => {
+            configureEmail(email);
+            configureToken(res.data.token);
+            routeChange();
+        })
+        .catch(err => {
+            console.log(err)
+            setRegisterSuccess(false)
+            setIncorrectPassword(true);
+        });
     }
 
     const handleSignup = async (e) => {
@@ -37,17 +55,32 @@ const LoginScreen = () => {
             name: username,
             password: password
         }))
-        .then(res => console.log(`${res.status} ${res.data}`))
-        .catch(err => console.log(err));
+        .then(res => {
+            setRegisterSuccess(true)
+            setEmail('')
+            setPassword('')
+            setUsername('')
+            setRegisterOption(false)
+        })
+        .catch(err => {
+            console.log(err)
+            setRegisterSuccess(false)
+            setIncorrectRegister(true)
+        });
     }
 
-    return (
+    const removeAlerts = () => {setIncorrectPassword(false); setIncorrectRegister(false);}
+
+    return loggedIn ? <Navigate replace to="/workspaces" /> :
         <ThemeProvider theme={darkTheme}>
             <Container maxWidth="sm">
                 <CssBaseline />
                 <Box sx={{marginTop: 16, display: 'flex', flexDirection: 'column', alignItems: 'center'}}>
                     <img src="logo.png" style={{maxWidth: '150px', marginBottom: 24}} alt="Taskedo Logo" />
                     <Typography component="h1" variant="h4" sx={{ marginBottom: 4 }}>{registerOption ? 'Rejestracja' : 'Logowanie'}</Typography>
+                    {incorrectPassword && <Alert severity="error">Niepoprawne dane logowania!</Alert>}
+                    {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
+                    {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
                         <TextField 
                             margin="normal"
@@ -61,6 +94,7 @@ const LoginScreen = () => {
                             autoFocus
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
+                            onFocus={removeAlerts}
                         />
                         {registerOption && <TextField 
                             margin="normal"
@@ -72,6 +106,7 @@ const LoginScreen = () => {
                             autoComplete="username"
                             value={username}
                             onChange={(e) => setUsername(e.target.value)}
+                            onFocus={removeAlerts}
                         />}
                         <TextField 
                             margin="normal"
@@ -84,6 +119,7 @@ const LoginScreen = () => {
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
+                            onFocus={removeAlerts}
                         />
                         <Grid container justifyContent="center">
                             <Button type="submit" variant="contained" sx={{ marginTop: 3, marginBottom: 2 }}>{registerOption ? 'Załóż konto' : 'Zaloguj się'}</Button>
@@ -95,7 +131,6 @@ const LoginScreen = () => {
                 </Box>
             </Container>
         </ThemeProvider>
-    )
 };
 
 export default LoginScreen;

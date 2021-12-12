@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/workspaces"
+  to = "/"
+  status = 200
