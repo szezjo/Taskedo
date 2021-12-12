@@ -12,6 +12,8 @@ const darkTheme = createTheme({
       mode: 'dark',
     },
 });
+// const SERVER_PATH = https://shrouded-lake-50073.herokuapp.com;
+const SERVER_PATH = 'http://localhost:3000';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
@@ -21,7 +23,7 @@ const LoginScreen = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        axios.post("https://shrouded-lake-50073.herokuapp.com/user/login", ({
+        axios.post(`${SERVER_PATH}` + `/user/login`, ({
                 email: email,
                 password: password
             })
@@ -32,7 +34,7 @@ const LoginScreen = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault();
-        axios.post("https://shrouded-lake-50073.herokuapp.com/user/register", ({
+        axios.post(`${SERVER_PATH}` + "/user/register", ({
             email: email,
             name: username,
             password: password
@@ -40,7 +42,6 @@ const LoginScreen = () => {
         .then(res => console.log(`${res.status} ${res.data}`))
         .catch(err => console.log(err));
     }
-
     return (
         <ThemeProvider theme={darkTheme}>
             <Container maxWidth="sm">
