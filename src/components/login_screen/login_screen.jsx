@@ -5,7 +5,7 @@ import { Alert, Button, Container, CssBaseline, Grid, TextField, Typography } fr
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
-
+import { Input} from '@mui/material';
 const axios = require('axios');
 
 const darkTheme = createTheme({
@@ -79,9 +79,19 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
             "Contetnt-Type":"multipart/form-data" 
         }
     };
-    const sendImage = (e) => {
-
+    const uploadAndSend = (e) => {
+        let file;
+        if(e && e.target && e.target.files[0])
+        {
+            file = e.target.files[0];
+        }
         const formData = new FormData();
+        formData.append('workspace_id', "b6d258c00e62491abe6c0fd8f50ce180");
+        formData.append('board_id', "3fc550d82a964b21a36e6ef8c65973b3");
+        formData.append('list_id', "dad3d19123c246ee95b0dde113dddf49");
+        formData.append('author', "Aitor piotrek");
+        formData.append('comment', "test comment");
+        formData.append('ticket_id', "ef210aee2a0b43f5ad87b2d2527aa909");
         formData.append('file', file)   
         e.preventDefault();
     
@@ -111,7 +121,7 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
                     {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
                     {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
-                        <Input type="file" onChange={sendImage}>zalacznik</Input> //! DODAJE ZALACZNIK TUTAJ DO ZMIANY
+                        <Input type="file" onChange={uploadAndSend}>zalacznik</Input> //! DODAJE ZALACZNIK TUTAJ DO ZMIANY
                         <TextField 
                             margin="normal"
                             required
