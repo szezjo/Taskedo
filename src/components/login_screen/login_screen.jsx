@@ -13,7 +13,7 @@ const darkTheme = createTheme({
     },
 });
 // const SERVER_PATH = https://shrouded-lake-50073.herokuapp.com;
-const SERVER_PATH = 'http://localhost:3000';
+const SERVER_PATH = 'http://localhost:5000';
 
 const LoginScreen = () => {
     const [email, setEmail] = useState('');
