@@ -14,8 +14,8 @@ const darkTheme = createTheme({
     },
 });
 
-// const SERVER_URL = 'https://shrouded-lake-50073.herokuapp.com';
-const SERVER_URL = 'http://localhost:5000';
+const SERVER_URL = 'https://shrouded-lake-50073.herokuapp.com';
+// const SERVER_URL = 'http://localhost:5000';
 
 const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
     const [email, setEmail] = useState('');
@@ -121,7 +121,7 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
                     {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
                     {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
-                        <Input type="file" onChange={uploadAndSend}>zalacznik</Input> //! DODAJE ZALACZNIK TUTAJ DO ZMIANY
+                        <Input type="file" onChange={uploadAndSend}>zalacznik</Input>
                         <TextField 
                             margin="normal"
                             required

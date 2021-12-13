@@ -58,7 +58,7 @@ const List = ({list, workspaceId, boardId}) => {
         <IconButton aria-label="new card" sx={{width: '24px', height: '24px'}} component="span" onClick={handleNewCardOpen}><AddIcon /></IconButton>
     </Box>
     {displayedList && displayedList.map((card, index) => (
-        <Card card={card} />
+        <Card card={card} workspaceId={workspaceId} boardId={boardId} listId={list.id}/>
     ))}
     </Item>
     <EditModal open={open} handleEdit={handleEdit} handleClose={handleClose} isNew={!isEditingList} isCard={!isEditingList} />

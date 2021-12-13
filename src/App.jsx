@@ -6,6 +6,8 @@ import LoginScreen from './components/login_screen/login_screen';
 import Workspaces from './components/workspaces/workspaces';
 import Board from './components/board/board'
 
+const axios = require('axios');
+
 const App = () => {
   const [token, setToken] = useState(() => {
     const saved = localStorage.getItem("token");
@@ -76,6 +78,20 @@ const App = () => {
   }
   , [loggedIn]);
 
+  const [workspaces, setWorkspaces] = useState([]);
+
+  const fetchData = async () => {
+    axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
+        email: email
+    }))
+    .then(res => {
+        setWorkspaces(res.data)
+    })
+    .catch(err => {
+        console.log(err)
+    })
+}
+
   return (
     // <div className="App">
     //   <h1>
@@ -97,8 +113,8 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} configureEmail={configureEmail} />} />
-        <Route path="/workspaces" element={<Workspaces changeBoard={goToBoard} logout={logout} loggedIn={loggedIn} userEmail={email} setWorkspaceId={setWorkspaceId} />} />
-        <Route path="/board" element={<Board board={activeBoard} workspaceId={workspaceId} />} />
+        <Route path="/workspaces" element={<Workspaces changeBoard={goToBoard} logout={logout} loggedIn={loggedIn} workspaces={workspaces} setWorkspaces={setWorkspaces} fetchData={fetchData} userEmail={email} setWorkspaceId={setWorkspaceId} />} />
+        <Route path="/board" element={<Board board={activeBoard} workspaceId={workspaceId} fetchData={fetchData} />} />
       </Routes>
     </Router>
   );

@@ -21,9 +21,9 @@ const style = {
     overflowY: 'auto',
 };
 
-const CardModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
+const CardModal = ({open, handleEdit, handleClose, handleComment, initTitle, initDescription}) => {
+    const [title, setTitle] = useState(initTitle);
+    const [description, setDescription] = useState(initDescription);
 
     return (
         <div>
@@ -34,7 +34,7 @@ const CardModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
             >
                 <Box sx={style}>
                     <Typography id="modal-modal-title" variant="h6" component="h2">
-                        {isCard ? (isNew ? 'Nowa karta' : 'Edytuj kartę') : (isNew ? 'Nowa lista' : 'Edytuj listę')}
+                        Edytuj kartę
                     </Typography>
                     <Box component="form">
                         <TextField 
@@ -48,7 +48,7 @@ const CardModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
                             value={title}
                             onChange={(e) => setTitle(e.target.value)}
                         />
-                        {isCard && <TextField 
+                        <TextField 
                             margin="normal"
                             fullWidth
                             id="description"
@@ -56,7 +56,7 @@ const CardModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
                             name="description"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                        />}
+                        />
                         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{marginTop: 3}}>
                             <Stack direction="row" spacing={2}>
                                 <IconButton aria-label="add attachment" sx={{width: '24px', height: '24px'}} component="span" ><AddLinkIcon /></IconButton>
@@ -77,12 +77,6 @@ const CardModal = ({open, handleEdit, handleClose, isNew, isCard}) => {
                             <Typography component="h5" variant="h5">Komentarze</Typography>
                             <NewComment />
                             <Comment userAvatar="S">Hello! </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference </Comment>
-                            <Comment userAvatar="S">Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference Lorem ipsum something something jojo reference </Comment>
                         </Stack>
                     </Box>
                 </Box>

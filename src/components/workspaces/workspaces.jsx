@@ -92,10 +92,10 @@ const generateAvatar = (text) => {
     return `${firstWord}${secondWord}`;
 }
 
-const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) => {
+const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, changeBoard, setWorkspaceId, userEmail}) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
-    const [workspaces, setWorkspaces] = useState([]);
+    
     const [activeWorkspace, setActiveWorkspace] = useState(0);
     const menuOpen = Boolean(anchorEl);
 
@@ -113,18 +113,6 @@ const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) 
         navigate(path);
     }
 
-    const fetchData = async () => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
-            email: userEmail
-        }))
-        .then(res => {
-            setWorkspaces(res.data)
-        })
-        .catch(err => {
-            console.log(err)
-        })
-    }
-
     useEffect(() => {
         const fetchData = async () => {
             axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
@@ -139,7 +127,7 @@ const Workspaces = ({logout, loggedIn, userEmail, changeBoard, setWorkspaceId}) 
         }
 
         fetchData()
-    }, [userEmail])
+    }, [userEmail, setWorkspaces])
 
     const createWorkspace = async (name) => {
         axios.post("https://shrouded-lake-50073.herokuapp.com/user/create_workspace", ({

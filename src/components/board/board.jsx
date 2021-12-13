@@ -15,7 +15,7 @@ const darkTheme = createTheme({
     },
 });
 
-const Board = ({board, workspaceId}) => {
+const Board = ({board, workspaceId, fetchData}) => {
     const navigate = useNavigate()
     const returnToWorkspaces = () => {
         const path = '/workspaces'
@@ -31,7 +31,7 @@ const Board = ({board, workspaceId}) => {
             "board_id": board.id,
         }))
         .then(res => {
-            setDisplayedBoard([...displayedBoard, {'name': name, 'list_id': res.data.id, 'tickets': [] }])
+            setDisplayedBoard([...displayedBoard, res.data])
             handleClose()
         })
         .catch(err => {
