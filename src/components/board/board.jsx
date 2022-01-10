@@ -15,7 +15,7 @@ const darkTheme = createTheme({
     },
 });
 
-const Board = ({board, workspaceId, fetchData}) => {
+const Board = ({board, workspaceId, fetchData, username}) => {
     const navigate = useNavigate()
     const returnToWorkspaces = () => {
         const path = '/workspaces'
@@ -25,7 +25,7 @@ const Board = ({board, workspaceId, fetchData}) => {
     const [displayedBoard, setDisplayedBoard] = React.useState(board.lists);
 
     const createList = async (name) => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/workspace/create_list", ({
+        axios.post("https://taskedo-alternative.herokuapp.com/workspace/create_list", ({
             "name": name,
             "workspace_id": workspaceId,
             "board_id": board.id,
@@ -61,7 +61,7 @@ const Board = ({board, workspaceId, fetchData}) => {
                 <Container maxWidth="false">
                     <Stack direction="row" spacing={5} sx={{overflowX: 'auto'}}>
                         {displayedBoard && displayedBoard.map((list, index) => (
-                           <List list={list} workspaceId={workspaceId} boardId={board.id} />
+                           <List key={`${index}`} list={list} workspaceId={workspaceId} boardId={board.id} fetchData={fetchData} username={username} />
                         ))}
                         <IconButton onClick={handleOpen} sx={{width: '48px', height: '48px'}}>
                             <AddIcon />

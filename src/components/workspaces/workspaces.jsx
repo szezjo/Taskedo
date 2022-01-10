@@ -92,7 +92,7 @@ const generateAvatar = (text) => {
     return `${firstWord}${secondWord}`;
 }
 
-const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, changeBoard, setWorkspaceId, userEmail}) => {
+const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, changeBoard, setWorkspaceId, userEmail, username}) => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
     
@@ -115,7 +115,7 @@ const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, cha
 
     useEffect(() => {
         const fetchData = async () => {
-            axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
+            axios.post("https://taskedo-alternative.herokuapp.com/user/get_workspaces", ({
                 email: userEmail
             }))
             .then(res => {
@@ -130,7 +130,7 @@ const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, cha
     }, [userEmail, setWorkspaces])
 
     const createWorkspace = async (name) => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/user/create_workspace", ({
+        axios.post("https://taskedo-alternative.herokuapp.com/user/create_workspace", ({
             "name": name,
             "email": userEmail
         }))
@@ -144,7 +144,7 @@ const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, cha
     }
 
     const createBoard = async (name) => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/workspace/create_board", ({
+        axios.post("https://taskedo-alternative.herokuapp.com/workspace/create_board", ({
             "name": name,
             "workspace_id": workspaces[activeWorkspace].id
         }))
@@ -230,9 +230,9 @@ const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, cha
                                 key="UserAvatar"
                             >
                                 <ListItemIcon>
-                                    <Avatar sx={{ bgcolor: orange[500] }}>U</Avatar>
+                                    <Avatar sx={{ bgcolor: orange[500] }}>{generateAvatar(username)}</Avatar>
                                 </ListItemIcon>
-                                <ListItemText primary="user" />
+                                <ListItemText primary={username} />
                             </ListItem>
                             <Menu
                                 id="user-menu"

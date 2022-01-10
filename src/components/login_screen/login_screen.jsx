@@ -14,10 +14,10 @@ const darkTheme = createTheme({
     },
 });
 
-const SERVER_URL = 'https://shrouded-lake-50073.herokuapp.com';
-// const SERVER_URL = 'http://localhost:5000';
+// const SERVER_URL = 'https://shrouded-lake-50073.herokuapp.com';
+const SERVER_URL = 'https://taskedo-alternative.herokuapp.com';
 
-const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
+const LoginScreen = ({configureToken, loggedIn, configureEmail, configureUsername}) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
@@ -41,6 +41,7 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
         )
         .then(res => {
             configureEmail(email);
+            configureUsername(res.data.name);
             configureToken(res.data.token);
             routeChange();
         })
@@ -86,16 +87,15 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
             file = e.target.files[0];
         }
         const formData = new FormData();
-        formData.append('workspace_id', "b6d258c00e62491abe6c0fd8f50ce180");
-        formData.append('board_id', "3fc550d82a964b21a36e6ef8c65973b3");
-        formData.append('list_id', "dad3d19123c246ee95b0dde113dddf49");
+        formData.append('workspace_id', "713238fe363445e88c9a57983dfa78dd");
+        formData.append('board_id', "563932e446ae4868aa2c0542437cdbc6");
+        formData.append('list_id', "453c1afcc3c54c2ea034ea1aa591a16b");
         formData.append('author', "Aitor piotrek");
-        formData.append('comment', "test comment");
-        formData.append('ticket_id', "ef210aee2a0b43f5ad87b2d2527aa909");
+        formData.append('ticket_id', "71e6e213067c451694def65d732e27ed");
         formData.append('file', file)   
         e.preventDefault();
     
-        axios.post(`${SERVER_URL}/workspace/add_comment_to_ticket`, formData, config)
+        axios.post(`${SERVER_URL}/workspace/add_attachment`, formData, config)
         .then(res => {
             if (res.data.status === 'success') {
             console.log('File send successfully');
@@ -121,7 +121,6 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail}) => {
                     {incorrectRegister && <Alert severity="error">Błąd rejestracji. Użytkownik już istnieje.</Alert>}
                     {registerSuccess && <Alert severity="success">Zarejestrowano!</Alert>}
                     <Box component="form" onSubmit={registerOption ? handleSignup : handleLogin}>
-                        <Input type="file" onChange={uploadAndSend}>zalacznik</Input>
                         <TextField 
                             margin="normal"
                             required

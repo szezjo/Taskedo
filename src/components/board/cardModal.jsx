@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import moment from 'moment';
 
-import { TextField, Button, Box, Typography, Modal, Stack, IconButton } from '@mui/material';
+import { TextField, Button, Box, Typography, Modal, Stack, IconButton, Tooltip } from '@mui/material';
 import AddLinkIcon from '@mui/icons-material/AddLink';
+import InfoIcon from '@mui/icons-material/Info';
 import NewComment from './newCommentBox'
 import Comment from './comment'
+import Attachment from './attachment';
 
 const style = {
     backgroundColor: '#202020',
@@ -21,7 +25,15 @@ const style = {
     overflowY: 'auto',
 };
 
-const CardModal = ({open, handleEdit, handleClose, handleComment, initTitle, initDescription}) => {
+const Input = styled('input')({
+    display: 'none',
+});
+
+const parseTime = (date) => {
+    return moment(date).format("DD-MM-YYYY, HH:mm");
+}
+
+const CardModal = ({open, handleEdit, handleClose, handleComment, handleAttachment, initTitle, initDescription, comments, attachments, creationDate, modifyDate, username}) => {
     const [title, setTitle] = useState(initTitle);
     const [description, setDescription] = useState(initDescription);
 
@@ -59,13 +71,15 @@ const CardModal = ({open, handleEdit, handleClose, handleComment, initTitle, ini
                         />
                         <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} sx={{marginTop: 3}}>
                             <Stack direction="row" spacing={2}>
-                                <IconButton aria-label="add attachment" sx={{width: '24px', height: '24px'}} component="span" ><AddLinkIcon /></IconButton>
+                                <label htmlFor="upload-file-button">
+                                    <Input id="upload-file-button" type="file" onChange={handleAttachment} />
+                                    <IconButton aria-label="add attachment" sx={{width: '24px', height: '24px'}} component="span" ><AddLinkIcon /></IconButton>
+                                </label>
+                                <Tooltip sx={{whiteSpace: 'pre-line'}} title={`utworzono: ${parseTime(creationDate)}, zmodyfikowano: ${parseTime(modifyDate)}`}><InfoIcon /></Tooltip>
                             </Stack>
                             <Button 
                                 onClick={() => {
                                     handleEdit(title, description)
-                                    setTitle('')
-                                    setDescription('')
                                 }}
                                 variant="contained"
                                 sx={{ marginTop: 3, marginBottom: 2 }}
@@ -73,10 +87,17 @@ const CardModal = ({open, handleEdit, handleClose, handleComment, initTitle, ini
                                 Zapisz
                             </Button>
                         </Stack>
+                        <Box sx={{marginTop: 3}}>
+                            {attachments && attachments.map((attachment, index) => (
+                                <Attachment key={`${index}`}>{attachment}</Attachment>
+                            ))}
+                        </Box>
                         <Stack direction="column" spacing={2} sx={{marginTop: 3}}>
                             <Typography component="h5" variant="h5">Komentarze</Typography>
-                            <NewComment />
-                            <Comment userAvatar="S">Hello! </Comment>
+                            <NewComment handleComment={handleComment} username={username}/>
+                            {comments && comments.slice(0).reverse().map((comment, index) => (
+                                <Comment key={`${index}`} username={comment.author} creationDate={parseTime(comment.creation_date)}>{comment.content}</Comment>
+                            ))}
                         </Stack>
                     </Box>
                 </Box>

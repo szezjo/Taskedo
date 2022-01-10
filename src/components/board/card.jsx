@@ -6,15 +6,17 @@ import CardModal from './cardModal'
 
 const axios = require('axios');
 
-const Card = ({card, workspaceId, boardId, listId}) => {
+const Card = ({card, workspaceId, boardId, listId, fetchData, username}) => {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     
     const [displayedCard, setDisplayedCard] = React.useState(card);
+    const [displayedComments, setDisplayedComments] = React.useState(card.comments);
+    const [displayedAttachments, setDisplayedAttachments] = React.useState(card.attachments);
 
     const updateCard = async (title, contents) => {
-        axios.put("https://shrouded-lake-50073.herokuapp.com/workspace/update_ticket", ({
+        axios.put("https://taskedo-alternative.herokuapp.com/workspace/update_ticket", ({
             "title": title,
             "contents": contents,
             "workspace_id": workspaceId,
@@ -33,9 +35,10 @@ const Card = ({card, workspaceId, boardId, listId}) => {
     }
 
     const createComment = async(comment) => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/workspace/add_comment_to_ticket", ({
+        console.log("hello")
+        axios.post("https://taskedo-alternative.herokuapp.com/workspace/add_comment_to_ticket", ({
             "comment": comment,
-            "author": "Username",
+            "author": username,
             "workspace_id": workspaceId,
             "board_id": boardId,
             "list_id": listId,
@@ -43,12 +46,48 @@ const Card = ({card, workspaceId, boardId, listId}) => {
 
         }))
         .then(res => {
-            setDisplayedCard(res.data.ticket);
-            handleClose()
+            setDisplayedComments(res.data.ticket.comments);
         })
         .catch(err => {
             console.log(err)
         })
+    }
+
+    const config = {
+        headers: {
+            "Content-Type":"multipart/form-data" 
+        }
+    };
+
+    const createAttachment = (e) => {
+        let file;
+        if(e && e.target && e.target.files[0])
+        {
+            file = e.target.files[0];
+        }
+        const formData = new FormData();
+        formData.append('workspace_id', workspaceId);
+        formData.append('board_id', boardId);
+        formData.append('list_id', listId);
+        formData.append('author', "test");
+        formData.append('ticket_id', card.id);
+        formData.append('file', file)   
+        e.preventDefault();
+    
+        axios.post(`https://taskedo-alternative.herokuapp.com/workspace/add_attachment`, formData, config)
+        .then(res => {
+            if (res.data.status === 'success') {
+            console.log('File send successfully');
+            console.log(res.data.attachment);
+            setDisplayedAttachments([...displayedAttachments, res.data.attachment]);
+            }
+            else{
+            console.log('File send failed');
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })    
     }
 
     return <>
@@ -58,7 +97,7 @@ const Card = ({card, workspaceId, boardId, listId}) => {
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{displayedCard.contents}</Typography>
             </CardContent>
         </MuiCard>
-        <CardModal open={open} handleClose={handleClose} handleEdit={updateCard} handleComment={createComment} displayedCard={displayedCard} initTitle={card.title} initDescription={card.contents} />
+        <CardModal open={open} handleClose={handleClose} handleEdit={updateCard} handleComment={createComment} handleAttachment={createAttachment} displayedCard={displayedCard} initTitle={card.title} initDescription={card.contents} comments={displayedComments} attachments={displayedAttachments} creationDate={displayedCard.creation_date} modifyDate={displayedCard.modification_date} username={username} />
         </>
 };
 

@@ -19,7 +19,7 @@ const Item = styled(Paper)(({ theme }) => ({
     minWidth: '250px',
   }));
 
-const List = ({list, workspaceId, boardId}) => {
+const List = ({list, workspaceId, boardId, fetchData, username}) => {
     const [open, setOpen] = React.useState(false);
     const [isEditingList, setIsEditingList] = React.useState(false);
     const handleEditListOpen = () => {setIsEditingList(true); setOpen(true);}
@@ -29,7 +29,7 @@ const List = ({list, workspaceId, boardId}) => {
     const [displayedList, setDisplayedList] = React.useState(list.tickets);
 
     const createCard = async (name, description) => {
-        axios.post("https://shrouded-lake-50073.herokuapp.com/workspace/create_ticket", ({
+        axios.post("https://taskedo-alternative.herokuapp.com/workspace/create_ticket", ({
             "title": name,
             "contents": description,
             "workspace_id": workspaceId,
@@ -58,7 +58,7 @@ const List = ({list, workspaceId, boardId}) => {
         <IconButton aria-label="new card" sx={{width: '24px', height: '24px'}} component="span" onClick={handleNewCardOpen}><AddIcon /></IconButton>
     </Box>
     {displayedList && displayedList.map((card, index) => (
-        <Card card={card} workspaceId={workspaceId} boardId={boardId} listId={list.id}/>
+        <Card key={`${index}`} card={card} workspaceId={workspaceId} boardId={boardId} listId={list.id} fetchData={fetchData} username={username} />
     ))}
     </Item>
     <EditModal open={open} handleEdit={handleEdit} handleClose={handleClose} isNew={!isEditingList} isCard={!isEditingList} />

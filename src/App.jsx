@@ -53,6 +53,16 @@ const App = () => {
     setEmail(newEmail);
   }
 
+  const [username, setUsername] = useState(() => {
+    const saved = localStorage.getItem("username");
+    const initialValue = saved;
+    console.log(initialValue);
+    return initialValue || '';
+  });
+  const configureUsername = (newUsername) => {
+    setUsername(newUsername);
+  }
+
   const logout = () => {
     setToken('');
     setLoggedIn(false);
@@ -69,6 +79,11 @@ const App = () => {
   }, [email]);
 
   useEffect(() => {
+    if(username==='') localStorage.removeItem("username");
+    else localStorage.setItem("username", username);
+  }, [username]);
+
+  useEffect(() => {
     if(loggedIn) localStorage.setItem("loggedIn", loggedIn)
     else {
       localStorage.removeItem("loggedIn");
@@ -81,7 +96,7 @@ const App = () => {
   const [workspaces, setWorkspaces] = useState([]);
 
   const fetchData = async () => {
-    axios.post("https://shrouded-lake-50073.herokuapp.com/user/get_workspaces", ({
+    axios.post("https://taskedo-alternative.herokuapp.com/user/get_workspaces", ({
         email: email
     }))
     .then(res => {
@@ -112,9 +127,9 @@ const App = () => {
 
     <Router>
       <Routes>
-        <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} configureEmail={configureEmail} />} />
-        <Route path="/workspaces" element={<Workspaces changeBoard={goToBoard} logout={logout} loggedIn={loggedIn} workspaces={workspaces} setWorkspaces={setWorkspaces} fetchData={fetchData} userEmail={email} setWorkspaceId={setWorkspaceId} />} />
-        <Route path="/board" element={<Board board={activeBoard} workspaceId={workspaceId} fetchData={fetchData} />} />
+        <Route path="/" element={<LoginScreen configureToken={configureToken} loggedIn={loggedIn} configureEmail={configureEmail} configureUsername={configureUsername}/>} />
+        <Route path="/workspaces" element={<Workspaces changeBoard={goToBoard} logout={logout} loggedIn={loggedIn} workspaces={workspaces} setWorkspaces={setWorkspaces} fetchData={fetchData} userEmail={email} username={username} setWorkspaceId={setWorkspaceId} />} />
+        <Route path="/board" element={<Board board={activeBoard} workspaceId={workspaceId} fetchData={fetchData} username={username} />} />
       </Routes>
     </Router>
   );
