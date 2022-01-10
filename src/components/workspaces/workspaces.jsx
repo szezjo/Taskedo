@@ -250,7 +250,7 @@ const Workspaces = ({logout, loggedIn, workspaces, setWorkspaces, fetchData, cha
                     <DrawerHeader />
                     <Container maxWidth="md">
                         <Grid container spacing={4}>
-                            {workspaces.length>0 && workspaces[activeWorkspace].boards.map((board, index) => (
+                            {workspaces.length>0 && workspaces[activeWorkspace].boards.slice(0).reverse().map((board, index) => (
                                 <Grid key={board.id} item xs={4}>
                                     <Card onClick={() => goToBoard(board)}>
                                         <CardContent>

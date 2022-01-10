@@ -90,6 +90,32 @@ const Card = ({card, workspaceId, boardId, listId, fetchData, username}) => {
         })    
     }
 
+    const removeAttachment = (e, id, index) => {
+        console.log(id);
+        const formData = new FormData();
+        formData.append('workspace_id', workspaceId);
+        formData.append('board_id', boardId);
+        formData.append('list_id', listId);
+        formData.append('ticket_id', card.id);
+        formData.append('attachment_id', id);
+        e.preventDefault();
+
+        axios.post(`https://taskedo-alternative.herokuapp.com/workspace/delete_attachment`, formData, config)
+        .then(res => {
+            if (res.data.status === 'success') {
+                const newDisplayedAttachments = [...displayedAttachments];
+                newDisplayedAttachments.splice(index, 1);
+                setDisplayedAttachments(newDisplayedAttachments);
+            }
+            else{
+            console.log('File send failed');
+            }
+        })
+        .catch(err => {
+            console.log(err)
+        })    
+    }
+
     return <>
         <MuiCard onClick={handleOpen} sx={{marginBottom: 1.5}}>
             <CardContent>
@@ -97,7 +123,7 @@ const Card = ({card, workspaceId, boardId, listId, fetchData, username}) => {
                 <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>{displayedCard.contents}</Typography>
             </CardContent>
         </MuiCard>
-        <CardModal open={open} handleClose={handleClose} handleEdit={updateCard} handleComment={createComment} handleAttachment={createAttachment} displayedCard={displayedCard} initTitle={card.title} initDescription={card.contents} comments={displayedComments} attachments={displayedAttachments} creationDate={displayedCard.creation_date} modifyDate={displayedCard.modification_date} username={username} />
+        <CardModal open={open} handleClose={handleClose} handleEdit={updateCard} handleComment={createComment} handleAttachment={createAttachment} removeAttachment={removeAttachment} displayedCard={displayedCard} initTitle={card.title} initDescription={card.contents} comments={displayedComments} attachments={displayedAttachments} creationDate={displayedCard.creation_date} modifyDate={displayedCard.modification_date} username={username} />
         </>
 };
 

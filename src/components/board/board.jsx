@@ -60,7 +60,7 @@ const Board = ({board, workspaceId, fetchData, username}) => {
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Container maxWidth="false">
                     <Stack direction="row" spacing={5} sx={{overflowX: 'auto'}}>
-                        {displayedBoard && displayedBoard.map((list, index) => (
+                        {displayedBoard && displayedBoard.slice(0).reverse().map((list, index) => (
                            <List key={`${index}`} list={list} workspaceId={workspaceId} boardId={board.id} fetchData={fetchData} username={username} />
                         ))}
                         <IconButton onClick={handleOpen} sx={{width: '48px', height: '48px'}}>

@@ -33,7 +33,7 @@ const parseTime = (date) => {
     return moment(date).format("DD-MM-YYYY, HH:mm");
 }
 
-const CardModal = ({open, handleEdit, handleClose, handleComment, handleAttachment, initTitle, initDescription, comments, attachments, creationDate, modifyDate, username}) => {
+const CardModal = ({open, handleEdit, handleClose, handleComment, handleAttachment, initTitle, initDescription, comments, attachments, creationDate, modifyDate, username, removeAttachment}) => {
     const [title, setTitle] = useState(initTitle);
     const [description, setDescription] = useState(initDescription);
 
@@ -89,7 +89,7 @@ const CardModal = ({open, handleEdit, handleClose, handleComment, handleAttachme
                         </Stack>
                         <Box sx={{marginTop: 3}}>
                             {attachments && attachments.map((attachment, index) => (
-                                <Attachment key={`${index}`}>{attachment}</Attachment>
+                                <Attachment key={`${index}`} id={attachment.id} index={index} removeAttachment={removeAttachment}>{attachment}</Attachment>
                             ))}
                         </Box>
                         <Stack direction="column" spacing={2} sx={{marginTop: 3}}>
