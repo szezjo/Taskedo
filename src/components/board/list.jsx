@@ -57,7 +57,7 @@ const List = ({list, workspaceId, boardId, fetchData, username}) => {
         <IconButton aria-label="edit list" sx={{width: '24px', height: '24px'}} component="span" onClick={handleEditListOpen}><EditIcon /></IconButton>
         <IconButton aria-label="new card" sx={{width: '24px', height: '24px'}} component="span" onClick={handleNewCardOpen}><AddIcon /></IconButton>
     </Box>
-    {displayedList && displayedList.slice(0).reverse().map((card, index) => (
+    {displayedList && displayedList.map((card, index) => (
         <Card key={`${index}`} card={card} workspaceId={workspaceId} boardId={boardId} listId={list.id} fetchData={fetchData} username={username} />
     ))}
     </Item>
