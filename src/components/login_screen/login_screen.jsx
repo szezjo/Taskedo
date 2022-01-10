@@ -5,7 +5,6 @@ import { Alert, Button, Container, CssBaseline, Grid, TextField, Typography } fr
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { Box } from '@mui/system';
-import { Input} from '@mui/material';
 const axios = require('axios');
 
 const darkTheme = createTheme({
@@ -74,41 +73,6 @@ const LoginScreen = ({configureToken, loggedIn, configureEmail, configureUsernam
     }
 
     const removeAlerts = () => {setIncorrectPassword(false); setIncorrectRegister(false);}
-
-    const config = {
-        headers: {
-            "Contetnt-Type":"multipart/form-data" 
-        }
-    };
-    const uploadAndSend = (e) => {
-        let file;
-        if(e && e.target && e.target.files[0])
-        {
-            file = e.target.files[0];
-        }
-        const formData = new FormData();
-        formData.append('workspace_id', "713238fe363445e88c9a57983dfa78dd");
-        formData.append('board_id', "563932e446ae4868aa2c0542437cdbc6");
-        formData.append('list_id', "453c1afcc3c54c2ea034ea1aa591a16b");
-        formData.append('author', "Aitor piotrek");
-        formData.append('ticket_id', "71e6e213067c451694def65d732e27ed");
-        formData.append('file', file)   
-        e.preventDefault();
-    
-        axios.post(`${SERVER_URL}/workspace/add_attachment`, formData, config)
-        .then(res => {
-            if (res.data.status === 'success') {
-            console.log('File send successfully');
-            }
-            else{
-            console.log('File send failed');
-            }
-        })
-        .catch(err => {
-            console.log(err)
-        })
-          
-    }
 
     return loggedIn ? <Navigate replace to="/workspaces" /> :
         <ThemeProvider theme={darkTheme}>
